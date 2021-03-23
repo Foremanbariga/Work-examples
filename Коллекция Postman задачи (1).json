@@ -1,0 +1,713 @@
+{
+	"info": {
+		"_postman_id": "566a78b6-19e9-4c55-9498-37bcc53687ac",
+		"name": "Задачи мегаплан",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DIRECTOR authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains access token\"] = responseBody.has(\"access_token\") === true;\r",
+							"  pm.collectionVariables.set(\"token\", data.access_token);\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body doesn't contain access token:\" + responseBody] = false;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Exploratory1@1.1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Exploratory1@1.1",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/auth/access_token",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"auth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST TASK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  pm.collectionVariables.set(\"task_id\", data.data.id);\r",
+							"  tests[\"Response body contains  task name\"] = responseBody.has(\"ЦУКЕРБЕРГ\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"id\": \"1001947\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"ЦУКЕРБЕРГ\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TASK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains  task name\"] = responseBody.has(\"ЦУКЕРБЕРГ\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"id\": \"1001947\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"ЦУКЕРБЕРГ\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update TASK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains updated task name\"] = responseBody.has(\"ЦУКЕРБЕРГ\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"ЦУКЕРБЕРГ\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TASKS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains Task\"] = responseBody.has(\"Task\") === true;\r",
+							"  tests[\"Response body contains Employee\"] = responseBody.has(\"Employee\") === true;\r",
+							"  tests[\"Response body contains ContactInfo\"] = responseBody.has(\"ContactInfo\" ) === true;\r",
+							"  }\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"There are no attributes into the body:\" + responseBody] = false;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE TASK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains  task name\"] = responseBody.has(\"Стать гуру API\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"Стать гуру API\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "STUFF authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains access token\"] = responseBody.has(\"access_token\") === true;\r",
+							"  pm.collectionVariables.set(\"token\", data.access_token);\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body doesn't contain access token:\" + responseBody] = false;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "Exploratory2@1.1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Exploratory2@1.1",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/auth/access_token",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"auth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST TASK Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  pm.collectionVariables.set(\"task_id\", data.data.id);\r",
+							"  tests[\"Response body contains  task name\"] = responseBody.has(\"ЦУКЕРБЕРГ\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"id\": \"1001947\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"ЦУКЕРБЕРГ\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TASKS Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains Task\"] = responseBody.has(\"Task\") === true;\r",
+							"  tests[\"Response body contains Employee\"] = responseBody.has(\"Employee\") === true;\r",
+							"  tests[\"Response body contains ContactInfo\"] = responseBody.has(\"ContactInfo\" ) === true;\r",
+							"  }\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"  tests[\"There are no attributes into the body:\" + responseBody] = false;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TASK Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains  task name\"] = responseBody.has(\"ЦУКЕРБЕРГ\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"id\": \"1001947\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"ЦУКЕРБЕРГ\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update TASK Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains updated task name\"] = responseBody.has(\"ЦУКЕРБЕРГ\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"ЦУКЕРБЕРГ\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE TASK Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 200) {\r",
+							"    \r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  tests[\"Response body contains  task name\"] = responseBody.has(\"Стать гуру API\") === true;\r",
+							"\r",
+							"}\r",
+							"else {var data = JSON.parse(responseBody);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"contentType\": \"Task\",\r\n            \"humanNumber\": 1947,\r\n            \"name\": \"Стать гуру API\",\r\n            \"isOverdue\": false,\r\n            \"status\": \"accepted\",\r\n            \"owner\": {\r\n                \"contentType\": \"Employee\",\r\n                \"id\": \"1000104\"\r\n            }\r\n}"
+				},
+				"url": {
+					"raw": "https://radio-shop.megaplan.by/api/v3/task/{{task_id}}",
+					"protocol": "https",
+					"host": [
+						"radio-shop",
+						"megaplan",
+						"by"
+					],
+					"path": [
+						"api",
+						"v3",
+						"task",
+						"{{task_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "ZTQ2YjIxNzUyNjUzNDM5NGI3YzY0ZDliM2EzOWE5ODE1MmUxM2ViY2U4OWEyMzNlMzgwMTA2ZWY2YWQxOGE5NA"
+		},
+		{
+			"key": "task_id",
+			"value": "1001947"
+		}
+	]
+}
